@@ -1,8 +1,8 @@
 ---
 title: Flight in Flux
 authors:
-  - name: Norah Jones
-    affiliation: The University
+  - name: Neva Morgan
+    affiliation: Colorado State University
     roles: writing
     corresponding: true
 bibliography: references.bib
