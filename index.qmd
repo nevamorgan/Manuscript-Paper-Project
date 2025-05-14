@@ -1,0 +1,809 @@
+---
+title: Flight in Flux
+authors:
+  - name: Norah Jones
+    affiliation: The University
+    roles: writing
+    corresponding: true
+bibliography: references.bib
+---
+
+## Section
+This is a simple placeholder for the manuscript's main document [@knuth84].
+
+
+
+
+# **Flight in Flux:** Analyzing American Bittern (Botaurus lentiginosus) Migration Timing and Climate Change
+
+### **Introduction:**
+
+Climate change poses many questions relating to systems across the
+globe, especially ecological and evolutionary systems. One system which
+could potentially be heavily impacted is migration. Bird migration
+timing is critical for ensuring species survival and ecological balance.
+As anthropogenic climate change has altered seasonal patterns, there is
+a potential disruption to migration timing, impacting birds' breeding
+success, food availability, and overall population health. The American
+Bittern (Botaurus lentiginosus), for example, depends on the thriving
+vegetation of marshlands for camouflage and nesting, as they are known
+to nest on the ground. Wetland birds are expected to be affected
+negatively by a considerable margin with the presence of a changing
+climate altering their regular migratory ranges and patterns (Steen et
+al., 2012).
+
+### **Abstract:**
+
+The American Bittern is a solitary, cryptic species that relies on
+wetlands for breeding and overwintering. Typically, these birds breed in
+freshwater marshes across Canada and the northern United States before
+migrating south to the southeastern U.S., Mexico, and Central America
+for the winter. However, increasing global temperatures, shifts in
+precipitation, and habitat loss due to climate change threaten to
+disrupt these migration patterns. Past studies on migratory birds
+indicate that climate change is leading to earlier spring arrivals,
+delayed fall departures, and shifts in overall migration routes (La
+Sorte & Thompson, 2007). For wetland-dependent birds like the American
+Bittern, changes in water levels due to altered precipitation cycles
+could further complicate their ability to find suitable stopover sites
+and breeding grounds. Given that wetlands are already among the most
+threatened ecosystems in North America, with significant losses due to
+urbanization and agriculture, climate-induced changes pose an additional
+challenge (Dahl, 2011). Studying the migration patterns of the American
+Bittern under a changing climate is essential for predicting future
+population trends and informing conservation strategies. By
+understanding how climate variables influence their movements,
+conservationists can prioritize habitat protection, restoration, and
+adaptive management to mitigate potential negative impacts.
+
+### **Motivation:**
+
+Bird migration range and timing is critical for ensuring species
+survival and ecological balance. However, climate change has altered
+seasonal patterns, potentially disrupting migration timing and impacting
+breeding success, food availability, and overall population health.
+Understanding these shifts can inform conservation strategies and
+mitigate risks to migratory bird species. Additionally, information
+gained from analyzing one species can be used to make inferences about
+the potential shifts in other similar species.
+
+### **Data:**
+
+#### Climate Data Online (NOAA Global Summary of the Month - U.S. Specific):
+
+With NOAA’s Climate Data Online search, we focused on nine weather
+stations located between Arizona (two weather stations: Phoenix and
+Kingsman), California (three weather stations: Lake Tahoe, San Diego,
+and Santa Rosa), Oregon (two weather stations: Chiloquin and Hermiston),
+and Washington (two weather stations Shelton and Spokane), to map
+multiple points of migratory status for the American Bittern. The files
+were requested through eBird, and then downloaded into a readable CSV
+for Excel to initially portion the data into the portions necessary for
+our analysis. Each weather station collected data that contained the
+specific information for the weather station, temperature,
+precipitation, and wind-related metrics (of which are negligible for our
+testing metrics).
+
+Variables within the Datasets contain:
+
+-   Metadata: Station name (NAME), location (LATITUDE, LONGITUDE,
+    ELEVATION), and observation date (DATE)
+
+-   Climate Variables: Includes average and extreme temperatures (e.g.,
+    ADPT, ASLP, AWBT), precipitation statistics (e.g., DP01, DP10), and
+    wind metrics (AWND)
+
+-   Attributes and Flags: Columns such as \*\_ATTRIBUTES and logical
+    flags provide metadata on data quality and source
+
+-   Format: Character (station info and attribute flags), numeric
+    (climate measures), and logical (indicator variables)
+
+#### American Bittern - eBird Data:
+
+This dataset was sourced from eBird and includes observations of
+American Bitterns (Botaurus lentiginosus) reported by citizen
+scientists. The dataset spans from 2000 to 2024 and includes over 70,000
+observations.
+
+-   Geographic Coverage: Arizona, California, Oregon, and Washington
+    within the U.S.
+
+-   Metadata: Observation Date Time Observations Started Latitude
+    Longitude
+
+-   Bird Details: Observation Count Breeding Code Behavior Code
+
+-   Format: Primarily character and logical columns, with a few numeric
+    fields (e.g., coordinates, observer count)
+
+### **Methods**
+
+To examine the effects climate change will have on the migratory timing
+of the American Bittern, we used a monthly summary of climate data from
+nine recorded NOAA weather stations within Arizona, California, Oregon,
+and Washington and observational data of their abundance within those
+states from eBird.
+
+#### Data Acquiring:
+
+Climate data within nine weather stations stretched between Arizona,
+California, Oregon, and Washington by NOAA Global Monthly Summaries,
+were recorded on a scale between 1947-2025. By using ‘R’ resources, we
+cleaned this data, removing unnecessary attributes for our study,
+converting units to be consistent throughout each dataset, and removing
+unnecessary data from past years to focus on data between 2000-2024.
+
+#### Data Processing / Seasonal Aggregation:
+
+Each weather station recorded the seasonal averages of temperature and
+precipitation, which were then manipulated into a cleaned version of
+that data, removing unnecessary wind records. With that, we created a
+list item, using ‘RStudio’, that combined the contents of the
+dataframes, to join them all together, ensuring columns and the contents
+of the dataframes are not duplicated or N/Aed. We then integrated a
+seasonal component into the data denoted by month: Winter = 12 (Dec.), 1
+(Jan.), 2 (Feb.); Spring = 3 (Mar.), 4 (Apr.), 5 (May); Summer = 6
+(Jun.), 7 (Jul.), 8 (Aug.); and Fall = 9 (Sep.), 10 (Oct.), 11 (Nov.).
+The seasonal component was also applied to the American Bittern
+migration dataframe, which was later converted to a tibble for later
+analysis.
+
+#### Migratory Timing Analysis of American Bittern:
+
+Observational data was provided to understand the timing of Bitterns
+within our four selected states, by grouping month and year to
+understand temporal patterns of their appearance based on the seasonal
+presence. Using a time series visualization to detect changes within the
+migratory patterns based on their seasonality between 2000 and 2024.
+
+#### Comparing Seasonal Trends of Climate Variability and Bittern Observation:
+
+To understand the correlation between seasonal changes for all the
+weather stations, we averaged the temperature and precipitation of each
+month per year. We then evaluated the long-term changes in bittern
+observation from plot layouts used before, by visually plotting the
+changes in the presence of climate seasonality. 
+
+To evaluate the influence of climate variability on American Bittern observations from 2000 to 2024, we fit a linear mixed effects model using the lmer function from the lme4 package in R. The response variable was the count of observations per year and state. Fixed effects included average temperature (avg_temp) and average precipitation (avg_precp), representing climatic conditions. To account for non-independence among observations across years and states, we included season year and state indicators (AZ, CA, OR, and WA) as random intercepts. This approach allowed us to control for unobserved heterogeneity due to temporal and spatial variation, isolating the effects of climate variables on bird observations. All data and observations were analyzed using RStudio version 2025.05.0 Build 496. 
+
+### **Results:**
+
+##### Coding and Figures:
+
+```{r}
+# Beginning Mumbo Jumbo Libraries:
+
+library(flextable) 
+library(readr) 
+library(tidyverse) 
+library(tidymodels) 
+library(ggplot2) 
+library(purrr) 
+library(dplyr) 
+library(lubridate) 
+library(tidyr) 
+library(gridExtra)
+library(stringr)
+library(cowplot)
+library(gridExtra)
+```
+
+1.  Create time period for seasons
+
+```{r}
+# Read in all climate data
+AZ_kingman <- read_csv("data/Climate Data/AZ-kingman-climate.csv")
+
+
+AZ_phoenix <- read_csv("data/Climate Data/AZ-phoenix-climate.csv")
+
+
+CA_lake_tahoe <- read_csv("data/Climate Data/CA-lake-tahoe-climate.csv")
+
+
+CA_sandiego <- read_csv("data/Climate Data/CA-sandiego-climate.csv")
+
+
+CA_santarosa <- read_csv("data/Climate Data/CA-santarosa_climate.csv")
+
+
+OR_chiloquin <- read_csv("data/Climate Data/OR-chiloquin-climate.csv")
+
+
+OR_hermiston <- read_csv("data/Climate Data/OR-hermiston-climate.csv")
+
+
+WA_shelton <- read_csv("data/Climate Data/WA-shelton-climate.csv")
+
+
+WA_spokane <- read_csv("data/Climate Data/WA-spokane-climate.csv")
+
+
+# Clarify joining values:
+
+AZ_kingman$LATITUDE <- as.numeric(AZ_kingman$LATITUDE)
+AZ_kingman$LONGITUDE <- as.numeric(AZ_kingman$LONGITUDE)
+
+AZ_phoenix$LATITUDE <- as.numeric(AZ_phoenix$LATITUDE)
+AZ_phoenix$LONGITUDE <- as.numeric(AZ_phoenix$LONGITUDE)
+
+CA_lake_tahoe$LATITUDE <- as.numeric(CA_lake_tahoe$LATITUDE)
+CA_lake_tahoe$LONGITUDE <- as.numeric(CA_lake_tahoe$LONGITUDE)
+
+CA_sandiego$LATITUDE <- as.numeric(CA_sandiego$LATITUDE)
+CA_sandiego$LONGITUDE <- as.numeric(CA_sandiego$LONGITUDE)
+
+CA_santarosa$LATITUDE <- as.numeric(CA_santarosa$LATITUDE)
+CA_santarosa$LONGITUDE <- as.numeric(CA_santarosa$LONGITUDE)
+
+OR_chiloquin$LATITUDE <- as.numeric(OR_chiloquin$LATITUDE)
+OR_chiloquin$LONGITUDE <- as.numeric(OR_chiloquin$LONGITUDE)
+
+OR_hermiston$LATITUDE <- as.numeric(OR_hermiston$LATITUDE)
+OR_hermiston$LONGITUDE <- as.numeric(OR_hermiston$LONGITUDE)
+
+WA_shelton$LATITUDE <- as.numeric(WA_shelton$LATITUDE)
+WA_shelton$LONGITUDE <- as.numeric(WA_shelton$LONGITUDE)
+
+WA_spokane$LATITUDE <- as.numeric(WA_spokane$LATITUDE)
+WA_spokane$LONGITUDE <- as.numeric(WA_spokane$LONGITUDE)
+
+
+#Cleaning Data - the SAGA:
+
+AZ_kingman <- AZ_kingman %>%
+  select(-contains("ATTRIBUTES"))
+
+AZ_phoenix <- AZ_phoenix %>%
+  select(-contains("ATTRIBUTES"))
+
+CA_lake_tahoe <- CA_lake_tahoe %>%
+  select(-contains("ATTRIBUTES"))
+
+CA_sandiego <- CA_sandiego %>%
+  select(-contains("ATTRIBUTES"))
+
+CA_santarosa <- CA_santarosa %>%
+  select(-contains("ATTRIBUTES"))
+
+OR_chiloquin <- OR_chiloquin %>%
+  select(-contains("ATTRIBUTES"))
+
+OR_hermiston <- OR_hermiston %>%
+  select(-contains("ATTRIBUTES"))
+
+WA_shelton <- WA_shelton %>%
+  select(-contains("ATTRIBUTES"))
+
+WA_spokane <- WA_spokane %>%
+  select(-contains("ATTRIBUTES"))
+
+#Adding to a collective list to make join easier!
+station_list <- list(AZ_kingman, AZ_phoenix, CA_lake_tahoe, CA_sandiego, CA_santarosa, OR_chiloquin, OR_hermiston, WA_shelton, WA_spokane)
+
+
+cleaned_list <- map(station_list, ~ select(.x, -contains("ATTRIBUTES")))
+
+
+#Binding the cleaned data!
+climate_data <- bind_rows(cleaned_list)
+
+```
+
+a.  Building Seasons:
+
+```{r}
+
+# Changing into month and year
+climate_data <- climate_data %>%
+  mutate(
+    DATE = paste0(DATE, "-01"), # Adding a day component since it was missing!
+    DATE = as.Date(DATE, format = "%Y-%m-%d"),
+    year = year(DATE),
+    month = month(DATE)
+  )
+
+
+# Creating seasons:
+climate_data <- climate_data %>%
+  mutate(
+    season = case_when(
+      month %in% c(12, 1, 2)  ~ "Winter",
+      month %in% c(3, 4, 5)   ~ "Spring",
+      month %in% c(6, 7, 8)   ~ "Summer",
+      month %in% c(9, 10, 11) ~ "Fall"
+    ))
+
+
+# Creating seasons with the year to compare for climate
+climate_data <- climate_data %>%
+  mutate(
+    season_year = if_else(month == 12, year + 1, year)
+  )
+
+
+#Separating temp and precp to clean further!
+avg_temp <- climate_data %>%
+  mutate(TAVG_F = (TAVG * 9/5) + 32) %>%
+  group_by(STATION, NAME, month, season, season_year) %>%
+  summarize(avg_temp = mean(TAVG_F, na.rm = TRUE), .groups = "drop") %>%
+  filter(season_year >= 2000, season_year <= 2024)
+
+avg_prec <- climate_data %>%
+  group_by(STATION, NAME, month, season, season_year)%>%
+  summarize(avg_prec = mean(PRCP, na.rm = TRUE), .groups = "drop") %>%
+  filter(season_year >= 2000, season_year <= 2024)
+
+```
+
+2.  Understanding the changes of average temperature and precipitation
+    in a U.S. map!
+
+
+a.  Temperature Difference between 2000 - 2024 based on seasonality
+
+The seasonal average temperature varies respectively within each recorded season showing similarities between Fall and Winter temperatures and Spring and Summer temperatures for all nine weather stations (Fig. 1). 
+
+```{r fig.cap="Figure 1: Average seasonal temperatures (°F) at nine selected climate stations across Arizona, California, Oregon, and Washington from 2000–2024, faceted by season.", fig.align='center'}
+#TEMPERATURE!!!
+
+#creating a separte coordination dataframe
+station_coords <- climate_data %>%
+  select(STATION, LATITUDE, LONGITUDE) %>%
+  distinct()
+
+#joining the two to relay to the map
+avg_temp_map <- avg_temp %>%
+  left_join(station_coords, by = "STATION")
+
+#loading the u.s. map raster file!
+us_map <- map_data("state")
+
+#Creating map of avg temperature for Selected stations based on seasonality!
+
+ggplot(avg_temp_map %>% filter(season_year >= 2000 & season_year <= 2024)) +
+  geom_polygon(data = us_map, aes(x = long, y = lat, group = group),
+               fill = "gray90", color = "white") +
+  geom_point(aes(x = LONGITUDE, y = LATITUDE, color = avg_temp), size = 2) +
+  scale_color_viridis_c(option = "plasma", name = "Avg Temp (°F)") +
+  coord_fixed(1.3) +
+  facet_wrap(~season) +
+  labs(title = "Seasonal Average Temperatures by Station (2000–2024)",
+       x = "", y = "") +
+  theme_minimal()
+
+```
+
+
+All seasons but Spring showed several degree increase in average temperature from 2000 to 2024 (Fig. 2).
+
+```{r fig.cap="Average seasonal temperatures (°F) at nine selected climate stations across Arizona, California, Oregon, and Washington. Recorded from January 1st, 2000 to December 31st, 2000. Faceted by season.", fig.align='center'}
+
+# Let's compare first just what 2000 vs 2024 looks like!
+
+# separating 2000 and 2024
+
+avg_temp_2000 <- avg_temp_map %>% filter(season_year == 2000)
+avg_temp_2024 <- avg_temp_map %>% filter(season_year == 2024)
+
+# Create the ggplot for 2000
+temp_2000 <- ggplot(avg_temp_2000) +
+  geom_polygon(data = us_map, aes(x = long, y = lat, group = group),
+               fill = "gray90", color = "white") +
+  geom_point(aes(x = LONGITUDE, y = LATITUDE, color = avg_temp), size = 2) +
+  scale_color_viridis_c(option = "plasma", name = "Avg. Temp. (°F)") +
+  coord_fixed(1.3) +
+  facet_wrap(~season) +
+  labs(title = "Seasonal Average Temperatures (2000)",
+       x = "",
+       y = "")+
+  theme_minimal()
+```
+
+
+
+```{r fig.cap="Average seasonal temperatures (°F) at nine selected weather stations across Arizona, California, Oregon, and Washington. Recorded from January 1st, 2024 to December 31st, 2024. Faceted by season.", fig.align='center'}
+# Create the ggplot for 2024
+temp_2024 <- ggplot(avg_temp_2024) +
+  geom_polygon(data = us_map, aes(x = long, y = lat, group = group),
+               fill = "gray90", color = "white") +
+  geom_point(aes(x = LONGITUDE, y = LATITUDE, color = avg_temp), size = 2) +
+  scale_color_viridis_c(option = "plasma", name = "Avg. Temp. (°F)") +
+  coord_fixed(1.3) +
+  facet_wrap(~season) +
+  labs(title = "Seasonal Average Temperatures (2024)",
+       x = "", y = "") +
+  theme_minimal()
+```
+
+
+```{r fig.cap="Figure 2: Average seasonal temperatures (°F) at nine selected weather stations across Arizona, California, Oregon, and Washington combined to show difference side by side. Faceted by season, featuring 2000 and 2024 temperature data.", fig.align='center'}
+# Arrange them to be side by side!
+
+plot_grid(temp_2000, temp_2024, labels=c("", ""), ncol = 1, nrow = 2, widths = c(1), align = "v")
+
+```
+
+b.  Precipitation Difference between 2000 - 2024 based on seasonality
+
+The precipitation average that is experienced between 2000-2024 for all nine weather stations have no stark difference in patterns across all four seasons (Fig. 3), although it is slightly wetter across the western coast weather stations.
+
+```{r fig.cap="Figure 3: Average seasonal precipitation (100μm) at nine selected weather stations across Arizona, California, Oregon, and Washington from 2000–2024, faceted by season.", fig.align='center'}
+#PRECIPITATION!!!
+
+#joining the two to relay to the map
+avg_prec_map <- avg_prec %>%
+  left_join(station_coords, by = "STATION")
+
+#Creating map of avg precipitation for Selected stations based on seasonality!
+
+ggplot(avg_prec_map %>% filter(season_year >= 2000 & season_year <= 2024)) +
+  geom_polygon(data = us_map, aes(x = long, y = lat, group = group),
+               fill = "gray90", color = "white") +
+  geom_point(data = avg_prec_map %>%
+               filter(season_year >= 2000 & season_year <= 2024),
+             aes(x = LONGITUDE, y = LATITUDE, color = avg_prec), size = 2) +
+  scale_color_viridis_c(option = "plasma", name = "Avg. Prec. (100 μm)") +
+  coord_fixed(1.3) +
+  facet_wrap(~season) +
+  labs(title = "Seasonal Average Precipitation by Station (2000–2024)",
+       x = "", y = "") +
+  theme_minimal()
+
+```
+
+Precipitation in the all four seasons, Winter, Spring, Summer, and Fall, has dramatically increased from 2000 to 2024, in the nine respective weather stations (Fig. 4). 
+
+```{r fig.cap="Average seasonal precipitation (100μm) at nine selected climate stations across Arizona, California, Oregon, and Washington. Recorded from January 1st, 2000 to December 31st, 2000. Faceted by season.", fig.align='center'}
+# Let's compare first just what 2000 vs 2024 looks like!
+
+# separating 2000 and 2024
+
+avg_prec_2000 <- avg_prec_map %>% filter(season_year == 2000)
+avg_prec_2024 <- avg_prec_map %>% filter(season_year == 2024)
+
+# Create the ggplot for 2000
+prec_2000 <- ggplot(avg_prec_2000) +
+  geom_polygon(data = us_map, aes(x = long, y = lat, group = group),
+               fill = "gray90", color = "white") +
+  geom_point(aes(x = LONGITUDE, y = LATITUDE, color = avg_prec), size = 2) +
+  scale_color_viridis_c(option = "plasma", name = "Avg. Prec. (100 μm)") +
+  coord_fixed(1.3) +
+  facet_wrap(~season) +
+  labs(title = "Seasonal Average Precipitation (2000)",
+       x = "", y = "") +
+  theme_minimal()
+
+```
+
+```{r fig.cap="Average seasonal precipitation (100μm) at nine selected weather stations across Arizona, California, Oregon, and Washington. Recorded from January 1st, 2024 to December 31st, 2024. Faceted by season.", fig.align='center'}
+# Create the ggplot for 2024
+prec_2024 <- ggplot(avg_prec_2024) +
+  geom_polygon(data = us_map, aes(x = long, y = lat, group = group),
+               fill = "gray90", color = "white") +
+  geom_point(aes(x = LONGITUDE, y = LATITUDE, color = avg_prec), size = 2) +
+  scale_color_viridis_c(option = "plasma", name = "Avg. Prec. (100 μm)") +
+  coord_fixed(1.3) +
+  facet_wrap(~season) +
+  labs(title = "Seasonal Average Precipitation (2024)",
+       x = "", y = "") +
+  theme_minimal()
+
+```
+
+
+```{r fig.cap="Figure 4: Average seasonal precipitation (100μm) at nine selected weather stations across Arizona, California, Oregon, and Washington combined to show difference side by side. Faceted by season, featuring 2000 and 2024 precipitation data.", fig.align='center'}
+
+# Arrange them to be side by side!
+
+plot_grid(prec_2000, prec_2024, labels=c("", ""), ncol = 1, nrow = 2, widths = c(1), align = "v")
+```
+
+
+3.  Bird migration pattern time!
+
+Based on eBird data, we are focusing in the Western Pacific region of
+the U.S. (Arizona, California, Oregon, and Washington). Based on the
+eBird data set variables for understanding migratory codes:
+
+```{r}
+# read in bird data:
+
+amebit_data <- read_csv("data/AB Data/amebit_data.csv")
+View(amebit_data)
+#I already precleaned it because of how much data there was for the American Bittern, so I don't have to clean it that much!
+
+
+# Cleaning the Data to focus on what we want:
+
+amebit_monthly <- amebit_data %>%
+  mutate(ob_date = mdy(`OBSERVATION DATE`),
+         year = year(ob_date),
+         month = month(ob_date, label = TRUE),
+         state_abb = state.abb[match(STATE, state.name)]
+  ) %>%
+  group_by(year, month, state_abb) %>%
+  summarize(observations = n(), .groups = "drop") %>%
+  filter(year >= 2000, year <= 2024)
+
+```
+
+
+```{r fig.cap="Figure 5: Distribution of American Bittern eBird observations within Arizona, California, Oregon, and Washington. Recorded over 2000-2024.", fig.align='center'}
+
+ggplot(amebit_monthly, aes(x = state_abb, y = observations, fill = state_abb)) +
+  geom_boxplot() +
+  scale_fill_brewer(palette = "Set3",
+                    name = "State Name",
+                    labels = c("AZ" = "Arizona",
+                               "CA" = "California",
+                               "OR" = "Oregon",
+                               "WA" = "Washington")) +
+  labs(title = "Distribution of eBird Bittern Observations by State from 2000 - 2024",
+       x = "State",
+       y = "Observation Count") +
+  theme_minimal()
+```
+
+
+```{r fig.cap="Figure 6: Observation trends of American Bitterns measured monthly from 2000 to 2024 within the four selected states: Arizona, California, Oregon, and Washington. Measured by eBird data analysts.", fig.align='center'}
+# Visualize time:
+
+
+amebit_monthly %>%
+  filter(state_abb %in% c("CA", "AZ", "WA", "OR")) %>%
+  ggplot(aes(x = month, y = observations, group = year, color = as.factor(year))) +
+  geom_line(alpha = 0.5) +
+  facet_wrap(~ state_abb, ncol = 2) +
+  labs(
+    title = "Seasonal Observation Trends of American Bittern (2000–2024)",
+    x = "Month",
+    y = "Number of Observations",
+    color = "Year"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    strip.text = element_text(face = "bold")
+  )
+
+
+```
+
+
+4.  Looking at seasonal changes over time
+
+```{r fig.cap="Figure 7: Seasonal trends of average temperature ((°F)) and precipitation (mm) as recorded by the nine weather stations in Arizona, California, Oregon, and Washington. Recorded between 2000 and 2024.", fig.align='center'}
+
+annual_summary <- climate_data %>%
+  mutate(
+    TAVG_F = (TAVG * 9/5) + 32,
+    PRCP_mm = PRCP / 10,
+    state_abb = str_extract(NAME, "[A-Z]{2}(?=\\sUS)")
+  ) %>%
+  filter(state_abb %in% c("AZ", "OR", "WA", "CA")) %>%
+  group_by(season_year, season, state_abb) %>%
+  summarize(
+    avg_temp = mean(TAVG_F, na.rm = TRUE),
+    avg_precp = mean(PRCP_mm, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  filter(season_year >= 2000, season_year <= 2024)
+
+# Reshaping to make plotting easier to understand shifts in Temp and Precip!
+
+long_annual <- annual_summary %>%
+  pivot_longer(cols = c(avg_temp, avg_precp),
+               names_to = "variable", values_to = "value")
+
+
+# Plotting:
+
+ggplot(long_annual, aes(x = season_year, y = value, color = season)) +
+  geom_line(linewidth = 1) +
+  facet_grid(variable ~ state_abb, scales = "free_y",
+             labeller = labeller(variable = c(
+               avg_temp = "Avg Temp (°F)",
+               avg_precp = "Avg Precip (mm)"
+             ))) +
+  theme(panel.spacing = unit(1.2, "lines")) +
+  scale_x_continuous(breaks = seq(2000, 2024, by = 4)) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  ) +
+  labs(
+    title = "Seasonal Climate Variation by State (2000–2024)",
+    x = "Year", y = NULL, color = "Season"
+  ) +
+  scale_color_brewer(palette = "Set1")
+
+```
+
+5.  Let's combine them to see if there is a difference!
+
+The correlation graph displays the relationship between average seasonal temperature (°F) and the number of Bittern observations, with separate linear trends plotted for each season. The visualized data reveals distinct seasonal patterns in both temperature and observation count (Fig. 7). Each point representing the yearly average temperature and respective count of American Bitterns.
+
+
+```{r}
+# Relationship between climate and bittern evolving together!
+amebit_seasonal <- amebit_data %>%
+  mutate(
+    ob_date = mdy(`OBSERVATION DATE`),
+    year = year(ob_date),
+    month = month(ob_date),
+    season = case_when(
+      month %in% c(12, 1, 2) ~ "Winter",
+      month %in% c(3, 4, 5) ~ "Spring",
+      month %in% c(6, 7, 8) ~ "Summer",
+      month %in% c(9, 10, 11) ~ "Fall"
+    ),
+    season_year = if_else(month == 12, year + 1, year),
+    state_abb = state.abb[match(STATE, state.name)]
+  ) %>%
+  filter(state_abb %in% c("CA", "AZ", "WA", "OR")) %>%
+  group_by(season_year, season, state_abb) %>%
+  summarize(observations = n(), .groups = "drop") %>%
+  filter(season_year >= 2000, season_year <= 2024)
+
+# Combining all data sets made so far:
+combined_data <- left_join(amebit_seasonal, annual_summary,
+                           by = c("season_year", "season", "state_abb"))
+
+combined_long <- combined_data %>%
+  pivot_longer(cols = c(avg_temp, avg_precp),
+               names_to = "variable", values_to = "value")
+```
+
+
+```{r fig.cap="Figure 8: Average temperature of year (2000-2024) in relation towards American Bittern observation count faceted by seasonality. Each point represents a year ranging from 2000-2024, with it's average temperature measured, by season, and number of recorded American Bittern observations. Recorded within Arizona, California, Oregon, and Washington.", fig.align='center'}
+
+
+ggplot(combined_long %>% filter(variable == "avg_temp"), 
+       aes(x = value, y = observations, color = season)) +
+  geom_point(alpha = 0.7) +
+  geom_text(data = combined_long %>%
+              filter(variable == "avg_temp", season_year %in% c(2000, 2024)),
+            aes(label = season_year),
+            vjust = -0.5, size = 3, show.legend = FALSE) +
+  facet_wrap(~ state_abb, scales = "free_x") +
+  labs(
+    title = "Seasonal Average Temperature and American Bittern Observations",
+    x = "Average Temperature (°F)",
+    y = "Number of Observations",
+    color = "Season"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 0, hjust = 1),
+    strip.text = element_text(size = 12),
+    legend.position = "bottom"
+  ) +
+  scale_color_brewer(palette = "Set1")
+
+```
+
+The correlation graph displays the relationship between average seasonal precipitation (mm) and the number of Bittern observations, with separate linear trends plotted for each season. The visualized data reveals distinct seasonal patterns in both precipitation and observation count (Fig. 8). Each point representing the yearly average precipitation and respective count of American Bitterns.
+
+```{r fig.cap="Figure 9: Average precipitation (mm) of year (2000-2024) in relation towards American Bittern observation count faceted by seasonality. Each point represents a year ranging from 2000-2024, with it's average precipitation measured, by season, and number of recorded American Bittern observations. Recorded within Arizona, California, Oregon, and Washington.", fig.align='center'}
+
+# Visualize precipitation seasonality and bittern data:
+
+ggplot(combined_long %>% filter(variable == "avg_precp"), 
+       aes(x = value, y = observations, color = season)) +
+  geom_point(alpha = 0.7) +
+  geom_text(data = combined_long %>%
+              filter(variable == "avg_precp", season_year %in% c(2000, 2024)),
+            aes(label = season_year),
+            vjust = -0.5, size = 3, show.legend = FALSE) +
+  facet_wrap(~ state_abb, scales = "free_x") +
+  labs(
+    title = "Seasonal Average Precipitation and American Bittern Observations",
+    x = "Average Precipitation (mm)",
+    y = "Number of Observations",
+    color = "Season"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 0, hjust = 1),
+    strip.text = element_text(size = 12),
+    legend.position = "bottom"
+  ) +
+  scale_color_brewer(palette = "Set1")
+```
+
+During Winter, average temperatures ranged from approximately 37°F to 47°F, with Bittern observations generally below 1,000 (Fig. 7). A slight positive trend was noted, suggesting a weak relationship between increasing temperature and higher observations (Fig. 9). In Spring, temperatures were around 50°F to 58°F (Fig. 7). Although this season had the highest overall number of Bittern observations—with some counts exceeding 2,000—there was a slight negative trend in the linear fit, indicating that the number of Bittern observations tended to decrease slightly with increasing temperature (Fig. 9). Fall showed a moderate positive trend, with observations increasing alongside temperatures ranging from 52°F to 59°F (Fig. 7). However, overall observations remained lower compared to Spring and Summer (Fig. 7). Summer displayed the strongest positive trend. As temperatures increased from 67°F to 74°F, Bittern observations increased significantly (Fig. 9). This season also showed more consistent and clustered high observations, suggesting a stronger relationship between higher temperatures and increased presence of Bitterns (Fig. 9).
+
+##### **ANOVA Tests:**
+
+```{r}
+# 1. creating a linear model test
+combined_data$season_year <- as.factor(combined_data$season_year)
+combined_data$state_abb <- as.factor(combined_data$state_abb)
+
+
+lm_mod <- lm(observations ~ avg_temp * season_year + avg_precp * season_year + state_abb, data = combined_data)
+
+library(car)
+print(Anova(lm_mod, type = 2))
+
+library(lme4)
+lmer_mod <- lmer(observations ~ avg_temp + avg_precp + (1 | season_year) + (1 | state_abb), data = combined_data)
+
+print(summary(lmer_mod))
+
+```
+
+```{r fig.cap="Figure 10: Average temperature (mm) of year (2000-2024) effect on American Bittern observation count taken during that time period, within Arizona, California, Oregon, and Washington. Points represent individual observations, and the blue line shows a linear trend with 95% confidence interval.", fig.align='center'}
+ggplot(combined_data, aes(x = avg_temp, y = observations)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "lm", se = TRUE, color = "steelblue1") +
+  labs(
+    title = "Effect of Average Temperature on Bittern Observations",
+    x = "Average Temperature (°F)",
+    y = "American Bittern Observations"
+  ) +
+  theme_minimal()
+```
+
+
+```{r fig.cap="Figure 11: Interannual variation in American Bittern observations from 2000 to 2024. Spread of observations across years, highlighting changes over time.", fig.align='center'}
+ggplot(combined_data, aes(x = factor(season_year), y = observations)) +
+  geom_boxplot(fill = "dodgerblue") +
+  labs(title = "Distribution of Observations by Year",
+       x = "Year",
+       y = "Observations") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 35, hjust = 1))
+```
+
+```{r fig.cap="Figure 12: Predicted effect of average temperature on American Bittern observations from the mixed effects model. Marginal predictions are based on fixed effects, holding precipitation, year, and state constant.", fig.align='center'}
+
+library(ggeffects)
+
+# Predict marginal effects of temperature
+pred_temp <- ggpredict(lmer_mod, terms = "avg_temp")
+
+plot(pred_temp) +
+  labs(
+    title = "Predicted Observations vs. Avg Temp (Mixed Model)",
+    x = "Average Temperature (°F)",
+    y = "Predicted Observations"
+  )
+```
+
+```{r fig.cap="Figure 13: Random intercept effects of the year [[1]] and state [[2]] on American Bittern observations from the mixed model. Positive values (blue) indicate above-average observation rates relative to the grand mean. Negative values (red) indicative a below-average observation rates relative to the grand mean.", fig.align='center'}
+library(sjPlot)
+
+# Plot random intercepts for year and state
+plot_model(lmer_mod, type = "re", sort.est = TRUE, title = "Random Effects: Year and State on Bittern Observations")
+```
+
+
+### **Discussion:**
+
+These results suggest that seasonal temperature plays a variable role in Bittern observations, likely reflecting differences in migratory behavior, breeding activity, and habitat use throughout the year.
+
+The strong positive trend in Summer may indicate that Bitterns are more active or easier to observe during warmer months, potentially due to breeding activity or greater availability of wetland habitats. Similarly, the positive trend in Fall could reflect pre-migration behavior or favorable foraging conditions as temperatures cool.
+
+The Spring season, despite having the highest individual observation counts, showed a slight negative trend. This may reflect a peak in migration or nesting activity occurring at lower spring temperatures, after which observations decline as temperatures rise.
+
+Winter observations were consistently low, which aligns with the
+species' known migratory behavior—many populations leave colder regions during winter months. The weak positive correlation may suggest that in relatively milder winters, some individuals remain present or return earlier.
+
+Overall, this analysis underscores how temperature and seasonality can influence bird detection and presence. Further investigation into habitat variables, precipitation, and food availability could clarify the mechanisms behind these seasonal patterns. Understanding these relationships is especially important in the context of climate change, which may shift seasonal temperature regimes and, in turn, influence Bittern migration and habitat use.
+
+### **References:**
+
+Status and trends of wetlands in the conterminous United States 2004 to
+2009. US Department of the Interior, US Fish and Wildlife Service,
+Fisheries and Habitat Conservation.
+
+eBird. (2025). eBird: An online database of bird distribution and
+abundance \[web application\]. eBird, Cornell Lab of Ornithology,
+Ithaca, New York. Available: http://www.ebird.org. (Accessed: April 16,
+2025).
+
+La Sorte, F. A., & Thompson III, F. R. (2007). Poleward shifts in winter
+ranges of North American birds. Ecology, 88(7), 1803-1812.
