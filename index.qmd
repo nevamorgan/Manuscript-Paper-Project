@@ -5,10 +5,13 @@ authors:
     affiliation: Colorado State University
     roles: writing & coding
     corresponding: true
+  
   - name: Mia Colangelo
     affiliation: Colorado State University
     roles: writing
-    corresponding: false
+    corresponding: true
+    
+    
 bibliography: references.bib
 ---
 
@@ -162,32 +165,6 @@ library(gridExtra)
 
 ```{r}
 # Read in all climate data
-AZ_kingman <- read_csv("data/Climate Data/AZ-kingman-climate.csv")
-
-
-AZ_phoenix <- read_csv("data/Climate Data/AZ-phoenix-climate.csv")
-
-
-CA_lake_tahoe <- read_csv("data/Climate Data/CA-lake-tahoe-climate.csv")
-
-
-CA_sandiego <- read_csv("data/Climate Data/CA-sandiego-climate.csv")
-
-
-CA_santarosa <- read_csv("data/Climate Data/CA-santarosa_climate.csv")
-
-
-OR_chiloquin <- read_csv("data/Climate Data/OR-chiloquin-climate.csv")
-
-
-OR_hermiston <- read_csv("data/Climate Data/OR-hermiston-climate.csv")
-
-
-WA_shelton <- read_csv("data/Climate Data/WA-shelton-climate.csv")
-
-
-WA_spokane <- read_csv("data/Climate Data/WA-spokane-climate.csv")
-
 
 # Clarify joining values:
 

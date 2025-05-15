@@ -5,10 +5,13 @@ authors:
     affiliation: Colorado State University
     roles: writing & coding
     corresponding: true
+  
   - name: Mia Colangelo
     affiliation: Colorado State University
     roles: writing
-    corresponding: false
+    corresponding: true
+    
+    
 bibliography: references.bib
 ---
 
